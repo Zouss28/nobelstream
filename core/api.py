@@ -17,6 +17,7 @@ CACHE_EXPIRATION = 86400  # 24 hours
 @functools.lru_cache(maxsize=128)
 def get_api_data(func, *args, **kwargs):
     response = func(*args, **kwargs)
+    print(response.json())
     return response.json()
 
 @functools.lru_cache(maxsize=128)
@@ -418,26 +419,26 @@ def genre_series2(genre=None):
 #     ]
 
 def movie_lang(movie_id):
-    # fr_url = f"https://api.frembed.fun/movies/check?id={movie_id}"
-    # fr_response = get_api_data(requests.get, fr_url)
-    # fr_lang = fr_response.get('result', {}).get('Total', 0) > 0
+    fr_url = f"https://api.frembed.fun/movies/check?id={movie_id}"
+    fr_response = get_api_data(requests.get, fr_url)
+    fr_lang = fr_response.get('result', {}).get('Total', 0) > 0
 
     eng_url = f"https://vidsrc.xyz/embed/movie/{movie_id}"
     eng_response = requests.get(eng_url)
     eng_lang = eng_response.status_code == 200
 
-    return False, eng_lang
+    return fr_lang, eng_lang
 
 def show_lang(show_id):
-    # fr_url = f"https://api.frembed.fun/tv/check?id={show_id}"
-    # fr_response = get_api_data(requests.get, fr_url)
-    # fr_lang = int(fr_response.get('result', {}).get('totalItems', 0)) > 0
+    fr_url = f"https://api.frembed.fun/tv/check?id={show_id}"
+    fr_response = get_api_data(requests.get, fr_url)
+    fr_lang = int(fr_response.get('result', {}).get('totalItems', 0)) > 0
 
     eng_url = f"https://vidsrc.xyz/embed/tv/{show_id}"
     eng_response = requests.get(eng_url)
     eng_lang = eng_response.status_code == 200
 
-    return False, eng_lang
+    return fr_lang, eng_lang
 
 def french_saison(show_id):
     fr_url = f"https://api.frembed.fun/tv/check?id={show_id}"
