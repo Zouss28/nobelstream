@@ -17,7 +17,8 @@ CACHE_EXPIRATION = 86400  # 24 hours
 @functools.lru_cache(maxsize=128)
 def get_api_data(func, *args, **kwargs):
     response = func(*args, **kwargs)
-    print(response.json())
+    if response.status_code != 200:
+        print(response)
     return response.json()
 
 @functools.lru_cache(maxsize=128)
