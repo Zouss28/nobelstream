@@ -19,6 +19,7 @@ def get_api_data(func, *args, **kwargs):
     response = func(*args, **kwargs)
     if response.status_code != 200:
         print(response)
+        return {}
     return response.json()
 
 @functools.lru_cache(maxsize=128)
